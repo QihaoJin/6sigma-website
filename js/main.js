@@ -73,22 +73,37 @@
   }
 
   // --- Email subscribe form ---
+  // Google Sheets integration: set GOOGLE_SCRIPT_URL after deploying Apps Script
+  const GOOGLE_SCRIPT_URL = '';  // TODO: paste your Google Apps Script URL here
+
   function setupForms() {
-    document.querySelectorAll('.subscribe-form').forEach(form => {
-      form.addEventListener('submit', (e) => {
+    document.querySelectorAll('.subscribe-form, .subscribe').forEach(form => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const input = form.querySelector('input[type="email"]');
+        const btn = form.querySelector('button[type="submit"]');
         const successEl = form.nextElementSibling;
         if (!input || !input.value) return;
 
-        // TODO: integrate with real email service (Mailchimp, SendGrid, etc.)
-        console.log('[Subscribe]', input.value);
+        const email = input.value;
+        const origText = btn ? btn.textContent : '';
+        if (btn) { btn.disabled = true; btn.textContent = '...'; }
 
-        input.value = '';
-        if (successEl && successEl.classList.contains('subscribe-success')) {
-          successEl.classList.add('show');
-          setTimeout(() => successEl.classList.remove('show'), 5000);
+        try {
+          if (GOOGLE_SCRIPT_URL) {
+            await fetch(GOOGLE_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: email, timestamp: new Date().toISOString() })
+            });
+          }
+          input.value = '';
+          if (successEl) { successEl.classList.add('show'); setTimeout(() => successEl.classList.remove('show'), 5000); }
+        } catch (err) {
+          console.error('[Subscribe] Error:', err);
         }
+        if (btn) { btn.disabled = false; btn.textContent = origText; }
       });
     });
   }
@@ -105,6 +120,15 @@
     });
   }
 
+  // --- Modals (close on overlay click) ---
+  function setupModals() {
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('open');
+      });
+    });
+  }
+
   // --- Init ---
   document.addEventListener('DOMContentLoaded', () => {
     setupNav();
@@ -112,5 +136,6 @@
     setupScrollAnimations();
     setupForms();
     setupFAQ();
+    setupModals();
   });
 })();
