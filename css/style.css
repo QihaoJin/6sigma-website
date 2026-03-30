@@ -181,7 +181,7 @@ img { max-width: 100%; display: block; }
   min-height: 520px; transition: transform .4s var(--ease);
 }
 .tile:hover { transform: scale(1.005); }
-.tile-content { padding: 44px 36px 0; flex: 0 0 auto; text-align: center; }
+.tile-content { padding: 44px 36px 0; flex: 0 0 auto; text-align: center; min-height: 160px; }
 .tile-content .t-eyebrow { margin-bottom: 6px; font-size: 17px; }
 .tile-content .t-body { font-size: 14px; max-width: 340px; margin: 8px auto 0; }
 .tile-img { flex: 0 0 220px; overflow: hidden; margin-top: 20px; }
