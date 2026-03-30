@@ -74,7 +74,7 @@
 
   // --- Email subscribe form ---
   // Google Sheets integration: set GOOGLE_SCRIPT_URL after deploying Apps Script
-  const GOOGLE_SCRIPT_URL = '';  // TODO: paste your Google Apps Script URL here
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwQNZjrv3bifotktWGRIePYo0JalUB8scQR1fgZiI0_EIsbMNqnyBeVCTtXSt_Cu9B/exec';
 
   function setupForms() {
     document.querySelectorAll('.subscribe-form, .subscribe').forEach(form => {
